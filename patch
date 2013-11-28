@@ -23,6 +23,9 @@ parser = argparse.ArgumentParser(description='Add one font glyphs (mostly symbol
 parser.add_argument('target_font_path', help='font file to patch', metavar='target')
 parser.add_argument('--symbols', help='font file with symbols', dest='symbols_font_path')
 parser.add_argument('--rename-as', help='name of the resulting patched font', dest='rename_as')
+parser.add_argument('--font-name', help='', dest='font_name')
+parser.add_argument('--family-name', help='name of the resulting font family name', dest='family_name')
+parser.add_argument('--full-name', help='', dest='full_name')
 parser.add_argument('--starting-at', help='codepoint where to start to copy symbols', dest='starting_at', default='0xe000')
 parser.add_argument('--to-namespace', help='all the copied glyphs shall be renamed as <NAMESPACE>_<ORIGINAL_NAME>', dest='to_namespace')
 parser.add_argument('--ratio', help='how much to force to scale proportionally the symbols glyphs', dest='ratio', default='1.0')
@@ -86,9 +89,9 @@ font = open_font(args.target_font_path)
 font.encoding = 'ISO10646'
 force_em_size_to_be_equal(symbols, font)
 if args.rename_as:
-    font.fontname = args.rename_as.replace(' ', '')
-    font.familyname = args.rename_as
-    font.fullname = args.rename_as
+    font.fontname = args.font_name or args.rename_as.replace(' ', '')
+    font.familyname = args.family_name or args.rename_as
+    font.fullname = args.full_name or args.rename_as
     font.appendSFNTName('English (US)', 'Preferred Family', font.familyname)
     font.appendSFNTName('English (US)', 'Compatible Full', font.fullname)
 
